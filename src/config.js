@@ -6,4 +6,6 @@ export const HOST = 'http://localhost'
 export const LABRADOR ='Labrador '
 export const MULHER = ' MULHER'
 
+
+
 export default { ola: "flavio" ,PORT, HOST, LABRADOR,MULHER}

@@ -6,17 +6,16 @@ import DADOS from './config.js'
 // import nomeAleatorio from ''
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
 app.listen(PORT, () => {
   console.log(`Server running on ${HOST}${PORT}`)
 })
 
-app.post('./produto',(req,res) => {
-    res.send('hello world')
+app.get('/',(req,res) => {
+    res.json({message: "hello world"})
 })
+
+
 
 
 console.log(DADOS.ola);

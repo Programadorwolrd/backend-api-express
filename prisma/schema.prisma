@@ -22,3 +22,4 @@ model user {
   email  String @unique(map: "unique-email") @db.VarChar(250)
   avatar String @db.Text
 }
+   

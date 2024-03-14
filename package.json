@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "pull":"npx prisma db pull",
+    "push":"npx prisma db push"
   },
   "keywords": [
     "js",

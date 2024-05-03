@@ -20,6 +20,11 @@ const userSchema = z.object({
       })
       .email({message: 'Email inválido.'})
       .max(500, {message: 'O email deve ter no máximo 500 caracteres.'}),
+    pass: z.string({
+        required_error: "A senha é obrigatória.",
+        invalid_type_error: "A senha deve ser uma string.",
+      })
+      .min(6, {message: 'A senha deve ter no mínimo 6 caracteres.'}),
     avatar: z.string({
         required_error: "O avatar é obrigatório.",
         invalid_type_error: "O avatar deve ser uma string.",
@@ -33,21 +38,58 @@ const validateUserToCreate = (user) => {
     return partialUserSchema.safeParse(user)
 }
 
+const validateUserToUpdate = (user) => {
+    const partialUserSchema = userSchema.partial({pass: true})
+    return partialUserSchema.safeParse(user)
+}
+
+const validateUserToLogin = (user) => {
+    const partialUserSchema = userSchema.partial({id: true, name: true, avatar: true})
+    return partialUserSchema.safeParse(user)
+}
+
 const getAll = async () => {
-    return await prisma.user.findMany()
+    return await prisma.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true
+        }
+    })
 }
 
 const getById = async (id) => {
     return await prisma.user.findUnique({
         where: {
             id
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true
+        }
+    })
+}
+
+const getByEmail = async (email) => {
+    return await prisma.user.findUnique({
+        where: {
+            email
         }
     })
 }
 
 const create = async (user) => {
     return await prisma.user.create({
-        data: user
+        data: user,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true
+        }
     })
 }
 
@@ -55,6 +97,12 @@ const remove = async (id) => {
     return await prisma.user.delete({
         where: {
             id
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true
         }
     })
 }
@@ -64,9 +112,15 @@ const edit = async (user) => {
         where: {
             id: user.id
         },
-        data: user
+        data: user,
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true
+        }
     })
 }
 
 
-export default {getAll, getById, create, remove, edit, validateUserToCreate}
+export default {getAll, getById, getByEmail, create, remove, edit, validateUserToCreate, validateUserToUpdate, validateUserToLogin}
